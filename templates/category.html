@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}{{ category['name'] }} — HoopSwap{% endblock %}
+
+{% block content %}
+    <nav class="breadcrumbs">
+        <a href="{{ url_for('index') }}">Home</a>
+        <span class="sep">/</span>
+        <span>{{ category['name'] }}</span>
+    </nav>
+
+    <section class="category-header">
+        <h1>{{ category['name'] }}</h1>
+        {% if category['description'] %}
+            <p class="muted">{{ category['description'] }}</p>
+        {% endif %}
+    </section>
+
+    <section class="products">
+        {% if products %}
+            <div class="card-grid">
+                {% for product in products %}
+                    <a class="card product-card"
+                       href="{{ url_for('product', product_id=product['id']) }}">
+                        <div class="product-image">
+                            {% if image_exists(product['image_name']) %}
+                                <img src="{{ url_for('static', filename='images/' ~ product['image_name']) }}"
+                                     alt="{{ product['name'] }}">
+                            {% else %}
+                                <img src="https://placehold.co/400x300?text={{ product['name']|urlencode }}"
+                                     alt="{{ product['name'] }}">
+                            {% endif %}
+                        </div>
+                        <div class="product-body">
+                            <h3>{{ product['name'] }}</h3>
+                            <p class="price">${{ '%.2f'|format(product['price']) }}</p>
+                            <p class="preview">
+                                {{ product['description'][:110] }}{% if product['description']|length > 110 %}&hellip;{% endif %}
+                            </p>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="muted">No products in this category yet.</p>
+        {% endif %}
+    </section>
+{% endblock %}

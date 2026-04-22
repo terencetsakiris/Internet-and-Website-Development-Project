@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}HoopSwap — Buy and Sell Basketball Gear{% endblock %}
+
+{% block content %}
+    <section class="hero">
+        <h1>Your court, your gear.</h1>
+        <p>Browse sneakers, jerseys, balls and accessories from fellow hoopers.</p>
+    </section>
+
+    <section class="categories">
+        <h2>Categories</h2>
+        <div class="card-grid">
+            {% for category in categories %}
+                <a class="card category-card"
+                   href="{{ url_for('category', category_id=category['id']) }}">
+                    <h3>{{ category['name'] }}</h3>
+                    <p class="muted">{{ category['description'] }}</p>
+                    <p class="count">
+                        {{ category['product_count'] }}
+                        item{{ '' if category['product_count'] == 1 else 's' }}
+                    </p>
+                </a>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}
